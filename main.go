@@ -7,6 +7,7 @@ import (
 func main() {
 	challengeOne()
 	challengeTwo()
+	challengeThree()
 }
 
 func challengeOne() {
@@ -24,5 +25,21 @@ func challengeTwo() {
 	xordBuffers := xorSameLengthBuffers(buffer1, buffer2)
 	fmt.Println("--- Challenge Two ---")
 	fmt.Printf("Xord buffers, response and expected respectively: \n%s\n", encodeToHex(xordBuffers))
-	fmt.Println("746865206b696420646f6e277420706c6179\n\n")
+	fmt.Printf("746865206b696420646f6e277420706c6179\n\n")
+}
+
+func challengeThree() {
+	encodedPhrase := decodeFromHex([]byte("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"))
+	maxScore := 0
+	decodedMaxScorePhrase := make([]byte, len(encodedPhrase))
+	for i := 0; i <= 255; i++ {
+		decodedPhrase := xorBuffer(encodedPhrase, uint8(i))
+		score := scorePhrase(decodedPhrase)
+		if score > maxScore {
+			maxScore = score
+			decodedMaxScorePhrase = decodedPhrase
+		}
+	}
+	fmt.Println("--- Challenge Three ---")
+	fmt.Printf("Xor cipher decoded phrase: \n%s\n\n", decodedMaxScorePhrase)
 }
